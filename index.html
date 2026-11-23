@@ -1,0 +1,512 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mind the Band: The Hidden Frequency Variable in Geometric RoPE</title>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="icon" type="image/png" sizes="64x64" href="assets/favicon.png">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<nav class="topbar" id="topbar" aria-label="Section navigation">
+  <div class="topbar-inner">
+    <a class="brand" href="#top">
+      <svg class="brand-mark" viewBox="0 5 64 54" aria-hidden="true">
+        <path fill="#cc1220" d="M56.11 21 A26.5 26.5 0 1 0 56.11 43 L45.35 43 A17.3 17.3 0 1 1 45.35 21 Z"/>
+        <rect x="1.5" y="24" width="61" height="16" fill="#0b2161"/>
+        <path fill="#ffffff" fill-rule="evenodd" d="M15.6 36.9 V27.1 H17.55 L20.5 33.15 L23.45 27.1 H25.4 V36.9 H23.55 V30.75 L21.15 35.65 H19.85 L17.45 30.75 V36.9 Z M29.5 27.1 H37.3 V28.85 H34.35 V36.9 H32.45 V28.85 H29.5 Z M41.1 27.1 H45.35 A2.33 2.33 0 0 1 45.95 31.72 A2.6 2.6 0 0 1 45.75 36.9 H41.1 Z M42.95 28.7 H45.05 A1.16 1.16 0 0 1 45.05 31.02 H42.95 Z M42.95 32.52 H45.45 A1.36 1.36 0 0 1 45.45 35.24 H42.95 Z"/>
+      </svg>
+      <span>Mind the Band</span>
+    </a>
+    <div class="topnav" id="paper-nav">
+      <a href="#overview">Video</a>
+      <a href="#sweep">Sweep</a>
+      <a href="#abstract">Abstract</a>
+      <a href="#concept">Theory</a>
+      <a href="#ranking">Ranking</a>
+      <a href="#renders">Explorer</a>
+      <a href="#why">Mechanism</a>
+      <a href="#geometry">Datasets</a>
+      <a href="#guidelines">Guidelines</a>
+      <a id="nav-cite" href="#cite" hidden>BibTeX</a>
+    </div>
+  </div>
+  <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
+</nav>
+
+<header class="head" id="top">
+  <div class="wrap">
+    <div class="paper-meta">
+      <span class="venue-pill"><span class="venue" id="venue"></span></span>
+      <span class="meta-sep" aria-hidden="true"></span>
+      <span class="meta-topic">Multi-View Transformer Positional Encoding</span>
+    </div>
+    <h1>
+      <span class="t1">Mind the Band</span>
+      <span class="sub">The Hidden Frequency Variable in Geometric RoPE</span>
+    </h1>
+    <p class="lede">Default geometric RoPE schedules tie spatial frequency bands to attention head dimension. Narrow bands blur cross-view correspondence and reverse benchmark rankings, while overly wide bands amplify depth-gradient noise.</p>
+    <div class="authors" id="authors" hidden></div>
+    <div class="hero-bar" id="hero-bar" hidden>
+      <div class="links" id="links" hidden></div>
+      <p id="release-status" class="hint" hidden></p>
+    </div>
+  </div>
+</header>
+
+<figure class="cottage-demo" id="cottage-demo" aria-label="Interactive illustration of multi-view encoding and novel view synthesis" hidden>
+  <div class="cottage-shell">
+    <div class="cottage-card">
+      <div class="cottage-pipeline">
+        <div class="cottage-stage cottage-input">
+          <h2><span class="stage-idx">01</span>Input views</h2>
+          <div class="capture-pair">
+            <div class="capture"><img data-cottage="input-a.webp" width="620" height="432" alt="Front-left view of the cottage. A red roundel painted on its side wall reads Mind the Band in a navy stripe."><span>Camera A</span></div>
+            <div class="capture"><img data-cottage="input-b.webp" width="620" height="432" alt="The same cottage seen from the right."><span>Camera B</span></div>
+          </div>
+        </div>
+        <div class="cottage-stage cottage-model">
+          <h2><span class="stage-idx">02</span>3D scene encoding</h2>
+          <div class="model-space">
+            <img data-cottage="impression.png" class="cloud-poster" width="570" height="480" alt="Colored surface points outlining the roof, windows, trees and fence.">
+            <canvas id="cottage-cloud" tabindex="0" role="img" aria-label="Cottage surface points in 3D. Drag or use the left and right arrow keys to rotate. Home resets the view." hidden></canvas>
+            <canvas id="cottage-ripple" aria-hidden="true" hidden></canvas>
+            <svg class="cottage-wave" viewBox="0 0 400 42" preserveAspectRatio="none" aria-hidden="true">
+              <path class="wave-axis" d="M0 21H400"/><path class="wave-trace" id="cottage-wave"></path>
+            </svg>
+            <span class="freq-badge" id="cottage-freq">top: 0.95 rot./patch</span>
+            <span class="orbit-hint" hidden>Drag to rotate 3D cloud</span>
+          </div>
+        </div>
+        <div class="cottage-stage cottage-novel">
+          <h2><span class="stage-idx">03</span>Synthesized novel view</h2>
+          <div class="novel-frame">
+            <img data-cottage="novel.webp" id="cottage-output" width="1380" height="1020" alt="A third camera looks down on the tiled roof, garden and picket fence of the cottage.">
+            <canvas id="cottage-pixels" aria-hidden="true" hidden></canvas>
+            <span id="cottage-quality">Sharp</span>
+          </div>
+        </div>
+      </div>
+      <div class="band-desk">
+        <button type="button" id="cottage-play" aria-label="Play frequency sweep" aria-pressed="false">
+          <svg viewBox="0 0 14 14" aria-hidden="true"><path class="band-start" d="M4 2l8 5-8 5z"/><path class="band-pause" d="M3 2h3v10H3zm5 0h3v10H8z"/></svg>
+        </button>
+        <label for="cottage-band">RoPE frequency band</label>
+        <div class="band-scale">
+          <input id="cottage-band" type="range" min="0" max="100" value="50" step="1">
+          <div class="band-stops">
+            <button type="button" data-band="0">Narrow (blurs)</button>
+            <button type="button" data-band="50">Tuned (0.3–3 rot./patch)</button>
+            <button type="button" data-band="100">Wide (streaks)</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <figcaption><b>Tune the frequency band and inspect the roof tiles and picket fence.</b>
+      <span>Interactive Blender illustration of how narrow bands blur multi-view correspondence while overly wide bands induce high-frequency phase streaks. <a href="#sweep">Jump to RealEstate10K sweep&nbsp;&darr;</a></span>
+    </figcaption>
+  </div>
+</figure>
+
+<main class="wrap" id="main-content">
+
+<section id="overview" class="first">
+  <div class="show-heading">
+    <div>
+      <h2>Overview video</h2>
+    </div>
+    <p id="overview-desc">One-minute silent overview: the task, how geometric RoPE writes camera geometry as waves from coarse to fine, what a band that is too narrow or too wide does to the rendered view, and how the head size moves the band.</p>
+  </div>
+  <div class="video-card overview-card">
+    <div class="vbox"><video id="v-overview" controls playsinline preload="metadata" poster="media/overview.webp"><source src="media/overview.mp4" type="video/mp4"></video></div>
+    <div class="vctrl">
+      <span>Speed</span><span class="seg" data-video="v-overview"></span>
+      <span class="hint" id="overview-hint">Silent H.264 MP4 (1280&times;720, 1:00). Rendered views and numbers come from our RealEstate10K evaluation; the point cloud is an illustration that the models never see.</span>
+    </div>
+  </div>
+</section>
+
+<section id="sweep">
+  <div class="show-heading sweep-heading">
+    <div>
+      <h2>Controlled frequency sweep on RealEstate10K</h2>
+    </div>
+    <p>Select any crop or press play to inspect the same target detail across six 47M single-ray RayRoPE models trained with identical architecture and data.</p>
+  </div>
+  <div class="teaser" id="teaser">
+    <div class="t-stage">
+      <div class="t-plateau" id="t-plateau"><span class="plateau-tag">0.3–3 rot./patch</span></div>
+      <div class="t-tiles" id="t-tiles"></div>
+      <svg class="t-curve" id="t-curve" role="img" aria-label="Test PSNR against the top frequency of the band"></svg>
+    </div>
+    <div class="t-foot">
+      <button class="play" id="t-play" type="button" aria-pressed="true" aria-label="Play or pause the tour">
+        <svg class="i-play" viewBox="0 0 12 12"><path d="M2 1l9 5-9 5z"/></svg>
+        <svg class="i-pause" viewBox="0 0 12 12"><path d="M2 1h3v10H2zM7 1h3v10H7z"/></svg>
+      </button>
+      <div class="t-read" id="t-read"></div>
+      <button class="switch" id="t-stop" type="button" aria-pressed="false"><i></i><span>3<sup>11</sup> with stop-gradient</span></button>
+    </div>
+  </div>
+  <p class="caption"><b>Controlled band sweep on RealEstate10K (6,474 test scenes).</b> Single-ray RayRoPE in a 47M model across frequency spans from 3&times; to 3<sup>11</sup>. Each tile shows the crop from Fig.&nbsp;1 of the paper. Shaded region marks top frequencies of 0.3 to 3 rotations per 8-pixel patch. Toggling the switch reveals the 3<sup>11</sup> model trained with only its high-frequency depth gradients blocked.</p>
+</section>
+
+<div class="facts" id="facts-strip" aria-label="Key quantitative findings">
+  <div class="fact">
+    <span class="fact-k">Small-head reversal</span>
+    <div class="v"><span id="s-gap"></span><span class="arrow">&rarr;</span><span id="s-left"></span> <small>dB</small></div>
+    <p>RayRoPE's gap to WorldRoPE with 48-channel heads, shrinking from its default 3&times; span to a 243&times; span.</p>
+  </div>
+  <div class="fact">
+    <span class="fact-k">Reliable top frequency</span>
+    <div class="v">0.3&ndash;3 <small>rot./patch</small></div>
+    <p>Top-frequency window (8-pixel patches) in which RayRoPE, URoPE, and WorldRoPE all perform reliably across benchmarks.</p>
+  </div>
+  <div class="fact">
+    <span class="fact-k">Stop-gradient recovery</span>
+    <div class="v"><span id="s-rec"></span><small>%</small></div>
+    <p>Share of the PSNR lost at 3<sup>11</sup> recovered when blocking only the six depth gradients above 1 rotation per patch.</p>
+  </div>
+</div>
+
+<section id="showcase" hidden>
+  <div class="show-heading">
+    <div>
+      <h2>Along the camera path</h2>
+    </div>
+    <p>Follow the same window frames and branches across four 47M single-ray RayRoPE models rendered from the same two input views.</p>
+  </div>
+  <div class="video-card">
+    <div class="cols" id="cols-show"></div>
+    <div class="vbox"><video id="v-show" controls loop muted playsinline preload="metadata"></video></div>
+    <div class="vctrl">
+      <span>Playback speed</span><span class="seg" data-video="v-show"></span>
+      <span class="hint">Three models vary only in band span; the fourth trains at 3<sup>11</sup> with high-frequency depth gradients stopped.</span>
+    </div>
+  </div>
+</section>
+
+<section id="abstract">
+  <div class="abstract-card">
+    <div class="abstract-head">
+      <h2>Abstract</h2>
+    </div>
+    <div class="abstract-body">
+      <p>Geometric rotary position encodings (RoPE) incorporate 3D camera geometry into multi-view attention by rotating
+        token features according to viewing rays, depths, and reprojected image coordinates. Each coordinate is rotated
+        across a progression of frequencies&mdash;its <i>frequency band</i>&mdash;yet existing implementations leave this band to
+        inherited defaults, either retaining standard 2D RoPE's top frequency or letting the frequency span grow
+        exponentially with the attention head dimension. We show that this unstandardized setting can reverse benchmark
+        rankings. In novel view synthesis on RealEstate10K, RayRoPE matches the strongest baseline in the 47M model
+        (144-channel heads), yet trails by 1.2&nbsp;dB in the 25M model (48-channel heads)&mdash;and exhibits the same reversal
+        when varying head size alone at fixed model width. Populating a 243&times; range with four frequencies instead of
+        the 3&times; default at 48 channels recovers 0.9&nbsp;dB of that gap. Across view synthesis and two-view depth
+        estimation, overly narrow bands consistently blur correspondence, whereas all three projection-based encodings
+        perform reliably when their top frequency lies within 0.3&ndash;3 rotations per 8-pixel patch (10&ndash;90 rotations across
+        256&times;256 RealEstate10K). At the opposite extreme, overly wide bands degrade RayRoPE through a forward&ndash;backward
+        asymmetry: averaging rotations over a predicted depth interval damps high frequencies in the forward pass, yet
+        leaves their gradients with respect to predicted depth undamped. Blocking only those high-frequency depth
+        gradients recovers 90&ndash;93% of the lost PSNR, showing that forward smoothing does not guarantee backward stability.
+        Guided by this analysis, we distill practical guidelines&mdash;setting bands in image coordinates, populating spans in
+        small heads, and avoiding unconditional same-view damping&mdash;and advocate reporting and matching frequency bands in
+        future multi-view benchmarks.</p>
+    </div>
+  </div>
+</section>
+
+<section id="concept">
+  <div class="split">
+    <div class="sec-head">
+      <h2>1. Across views, positions are continuous</h2>
+      <p>Within one image, tokens sit at integer patch positions. One rotation per patch gives every token the same
+        phase, and anything above half a rotation per patch aliases to a slower wave. Standard 2D RoPE therefore stops
+        at 0.16 rotations (1 radian) per patch.</p>
+      <p>Geometric RoPE projects each token's viewing ray into another camera. Because reprojected coordinates fall anywhere
+        inside a patch, frequencies near one rotation per patch cleanly separate sub-patch offsets rather than aliasing.</p>
+    </div>
+    <div class="panel" id="p-concept">
+      <canvas id="c-concept" height="334" role="img" aria-label="A wave sampled at patch positions and at continuous positions"></canvas>
+      <div class="ctrl">
+        <button class="play" type="button" data-anim="concept" aria-pressed="true" aria-label="Play or pause">
+          <svg class="i-play" viewBox="0 0 12 12"><path d="M2 1l9 5-9 5z"/></svg>
+          <svg class="i-pause" viewBox="0 0 12 12"><path d="M2 1h3v10H2zM7 1h3v10H7z"/></svg>
+        </button>
+        <div class="grow"><input type="range" id="r-concept" min="0.05" max="1.3" step="0.005" value="0.16" aria-label="Frequency in rotations per patch"></div>
+        <span class="readout" id="o-concept"></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="rule">
+  <div class="split">
+    <div class="sec-head">
+      <h2>2. Default bands depend on head dimension</h2>
+      <p>A head of dimension <i>d</i> that rotates <i>C</i> coordinates gives each of them <i>d</i>/(2<i>C</i>) frequencies.
+        RayRoPE fixes the lowest frequency and triples it at every step, so its range grows exponentially with the head
+        size: 3&times; with 48-channel heads and 243&times; with 144 for the released three-ray code, and 3<sup>11</sup>
+        with one ray per patch.</p>
+      <p>URoPE and WorldRoPE keep the top frequency of 2D RoPE and add lower or denser frequencies below it.</p>
+    </div>
+    <div class="panel" id="p-rule">
+      <canvas id="c-rule" height="336" role="img" aria-label="Default frequencies of each encoding for four head sizes"></canvas>
+      <div class="ctrl">
+        <button class="play" type="button" data-anim="rule" aria-pressed="true" aria-label="Play or pause">
+          <svg class="i-play" viewBox="0 0 12 12"><path d="M2 1l9 5-9 5z"/></svg>
+          <svg class="i-pause" viewBox="0 0 12 12"><path d="M2 1h3v10H2zM7 1h3v10H7z"/></svg>
+        </button>
+        <span>Head dimension <i>d</i></span>
+        <span class="seg" id="seg-rule"></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="ranking">
+  <div class="split">
+    <div class="sec-head">
+      <h2>3. Benchmark rankings invert with head size</h2>
+      <p>In the 25M model we change only the number of heads, setting the head dimension to 48, 96, or 192 at fixed total width. With its
+        default rule RayRoPE trails URoPE by <span class="num" id="n-uro"></span>&nbsp;dB and WorldRoPE by
+        <span class="num" id="n-wor"></span>&nbsp;dB at 48 channels, overtakes URoPE at 96, and approaches WorldRoPE at 192.</p>
+      <p>With its span held at 243&times;, RayRoPE stays within <span class="num" id="n-flat"></span>&nbsp;dB across all three
+        head sizes: apparent sensitivity to head size is sensitivity to the frequency band.</p>
+    </div>
+    <div class="chartbox" id="b-rank"><svg id="c-rank" role="img" aria-label="Test PSNR against head dimension for the 25M model"></svg></div>
+  </div>
+
+  <div class="subdeck">
+    <div class="scenes" data-scenes aria-label="Select test scene"></div>
+    <div class="video-card">
+      <div class="cols" id="cols-head"></div>
+      <div class="vbox"><video id="v-head" loop muted playsinline controls preload="metadata"></video></div>
+      <div class="vctrl">
+        <span>Speed</span><span class="seg" data-video="v-head"></span>
+        <span class="hint">25M model, 48-channel heads, rendered along the recorded camera path between the two input views.</span>
+      </div>
+    </div>
+    <div class="row5" id="head-stills"></div>
+    <div class="table-wrap"><table class="res" id="head-table"></table></div>
+  </div>
+</section>
+
+<section id="renders">
+  <div class="sec-head">
+    <h2>4. Render explorer across frequency bands</h2>
+    <p>Single-ray RayRoPE in the 47M model with 12 frequencies per coordinate across 15 scenes (paper figures, random test scenes, and 99th-percentile tail scenes). At 3&times;, fine detail blurs; around 243&times;, correspondence is crisp; at 3<sup>11</sup>, texture blurs and high-frequency colored streaks emerge, and both disappear when high-frequency depth gradients are stopped.</p>
+  </div>
+  <div class="scenes" data-scenes aria-label="Select test scene"></div>
+
+  <div class="explorer">
+    <div class="side">
+      <svg class="chart" id="chart" viewBox="0 0 318 214" role="img" aria-label="Test PSNR against the top frequency of the band"></svg>
+      <div class="stops" id="stops"></div>
+      <table class="kv">
+        <tr><td>Top frequency</td><td id="kv-top"></td></tr>
+        <tr><td>Test PSNR (6,474 scenes)</td><td id="kv-psnr"></td></tr>
+        <tr><td>SSIM / LPIPS</td><td id="kv-sl"></td></tr>
+      </table>
+    </div>
+    <figure class="compare-fig">
+      <div class="compare-frame">
+        <img id="ex-render" alt="Rendering" width="256" height="256" draggable="false">
+        <span class="hold-pill" id="gt-badge">Hold image to blink GT</span>
+      </div>
+      <figcaption><span id="ex-cap"></span></figcaption>
+    </figure>
+    <figure class="compare-fig">
+      <div class="compare-frame">
+        <img id="ex-gt" alt="Ground truth" width="256" height="256">
+        <span class="hold-pill static">Reference</span>
+      </div>
+      <figcaption>Ground truth</figcaption>
+    </figure>
+  </div>
+
+  <div class="under">
+    <div class="ins"><span>Input views</span>
+      <img id="in0" alt="First input view" width="256" height="256"><img id="in1" alt="Second input view" width="256" height="256"></div>
+    <div class="target-pick"><span>Target view</span> <span class="seg" id="views"></span></div>
+    <div class="scene-stat" id="sceneline"></div>
+  </div>
+
+  <div class="video-card">
+    <div class="cols" id="cols-band"></div>
+    <div class="vbox"><video id="v-band" loop muted playsinline controls preload="metadata"></video></div>
+    <div class="vctrl">
+      <span>Speed</span><span class="seg" data-video="v-band"></span>
+      <span class="hint">Camera trajectory between the two input views (<span id="nframes"></span> frames, forward and back).</span>
+    </div>
+  </div>
+</section>
+
+<section id="why">
+  <div class="split">
+    <div class="sec-head">
+      <h2>5. Forward damping vs. undamped depth gradients</h2>
+      <p>RayRoPE averages each rotation over a predicted depth interval [&mu;&minus;&Delta;, &mu;+&Delta;]. When many cycles fit inside the interval they cancel at <i>O</i>(1/&omega;), so a very high frequency barely changes the forward output.</p>
+      <p>Differentiating with respect to the interval center &mu; pulls out a factor of &omega; that cancels the 1/&omega; damping: shifting &mu; changes the integral at its two sharp endpoints regardless of how fast the wave oscillates inside. Smooth Gaussian windows (as in WorldRoPE) damp both forward values and depth derivatives.</p>
+      <div class="eq" id="eq-why"></div>
+    </div>
+    <div class="panel" id="p-why">
+      <canvas id="c-why" height="426" role="img" aria-label="A wave averaged over an interval, with the size of the output and of its gradient"></canvas>
+      <div class="ctrl">
+        <button class="play" type="button" data-anim="why" aria-pressed="true" aria-label="Play or pause">
+          <svg class="i-play" viewBox="0 0 12 12"><path d="M2 1l9 5-9 5z"/></svg>
+          <svg class="i-pause" viewBox="0 0 12 12"><path d="M2 1h3v10H2zM7 1h3v10H7z"/></svg>
+        </button>
+        <div class="grow"><input type="range" id="r-why" min="-1" max="2.6" step="0.01" value="0" aria-label="Rotations inside the interval"></div>
+        <span class="seg" id="seg-why"></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="fix">
+  <div class="split">
+    <div class="sec-head">
+      <h2>6. Causal interventions on wide-band RayRoPE</h2>
+      <p>We train the 3<sup>11</sup> model with its forward pass untouched and block only the depth gradient from the six
+        frequencies above one rotation per patch. This backward-only intervention recovers <span class="num" id="n-rec1"></span>% of the PSNR gap
+        to 243&times; on machine&nbsp;A (Tab.&nbsp;1; <span class="num" id="n-rec2"></span>% on a second seed, keeping both stopped seeds within 0.06&nbsp;dB, and 74% with 16-pixel patches; interactive renders above show the non-jumped machine-B 3<sup>11</sup> run at 25.22&nbsp;dB).</p>
+      <p>Removing those six frequencies altogether recovers 92%, whereas single-precision camera geometry narrows three seeds to a 0.23&nbsp;dB spread yet closes only a third of the gap (35% and 31%) unless paired with stop-gradient (+0.70 and +0.75&nbsp;dB; 85–87% overall). Fixed 1-patch floors recover 72–79% without stopping gradients, while learned-width Gaussians recover 27%.</p>
+    </div>
+    <div class="chartbox" id="b-rec">
+      <p class="hint">Share of the PSNR gap between 3<sup>11</sup> and 243&times; recovered by each
+        intervention (47M RayRoPE; outlined dot: second seed).</p>
+      <div class="bars" id="bars"></div>
+    </div>
+  </div>
+</section>
+
+<section id="geometry">
+  <div class="fig-header">
+    <div class="sec-head">
+      <h2>7. ScanNet++ and Scenes11</h2>
+      <p>Supplementary evaluations on mixed fisheye and pinhole indoor captures (ScanNet++) and posed two-view depth estimation (Scenes11). Switch tabs or click any figure to zoom at full 2000-pixel resolution.</p>
+    </div>
+    <div class="fig-toolbar">
+      <div class="fig-tabs" id="fig-tabs" role="tablist" aria-label="Supplementary figures">
+        <button type="button" role="tab" data-fig="0" aria-selected="false">S2 &middot; Camera Pairs</button>
+        <button type="button" role="tab" data-fig="1" aria-selected="true">S3 &middot; ScanNet++ Views</button>
+        <button type="button" role="tab" data-fig="2" aria-selected="false">S4 &middot; Method Ranking</button>
+        <button type="button" role="tab" data-fig="3" aria-selected="false">S5 &middot; Coord. Probes</button>
+        <button type="button" role="tab" data-fig="4" aria-selected="false">S7 &middot; Scenes11 Depth</button>
+      </div>
+      <button type="button" class="fig-all-btn" id="fig-all" aria-pressed="false">Show all 5</button>
+    </div>
+  </div>
+
+  <div class="fig-deck" id="fig-deck">
+    <figure class="paperfig" data-fig-panel="0" hidden>
+      <a href="media/comparisons/scannetpp_band.webp" target="_blank" rel="noopener" data-zoom><img loading="lazy" width="2000" height="448" src="media/comparisons/scannetpp_band.webp" alt="PSNR gain of the 243 times range over the default 27 times range during training, for four camera pairs and three seeds."></a>
+      <figcaption><span class="fig-tag">Fig. S2</span><b>Widening the band helps every camera pair.</b> Test PSNR on the 50 validation scenes of the 243&times; run minus the default
+        27&times; run with the same seed (width 768, head dimension 96), on 400 target views.</figcaption>
+    </figure>
+    <figure class="paperfig" data-fig-panel="1">
+      <a href="media/comparisons/scannetpp_views.webp" target="_blank" rel="noopener" data-zoom><img loading="lazy" width="2000" height="1755" src="media/comparisons/scannetpp_views.webp" alt="For three head sizes and all four camera pairs, a target view, ground-truth crop, default-range crop, and 243 times crop."></a>
+      <figcaption><span class="fig-tag">Fig. S3</span><b>Where the band changes ScanNet++ view synthesis.</b> Each block compares the default range of one head
+        size with 243&times; across all four camera pairs (homogeneous F&rarr;F and P&rarr;P on the left, mixed P&rarr;F and F&rarr;P on the right) at fixed quantiles of the gain distribution (top 5%, 75th, median, and 25th percentile; 25th and 10th in the lower row at <i>d</i>&nbsp;=&nbsp;96). PSNR covers the full valid target (higher in bold; &dagger;: compact single-ray variant at <i>d</i>&nbsp;=&nbsp;48).</figcaption>
+    </figure>
+    <figure class="paperfig" data-fig-panel="2" hidden>
+      <a href="media/comparisons/scannetpp_methods.webp" target="_blank" rel="noopener" data-zoom><img loading="lazy" width="2000" height="1534" src="media/comparisons/scannetpp_methods.webp" alt="RayRoPE, G-ray, CRePE, URoPE and WorldRoPE* on the same crops at head dimensions 48 and 144."></a>
+      <figcaption><span class="fig-tag">Fig. S4</span><b>Head size and method ranking on the same targets.</b> Five encodings at their default bands with
+        48- and 144-channel heads. The highest full-view PSNR of each row is in bold. Targets sit at the 90th (fisheye) and
+        50th (pinhole) percentile of the reversal between WorldRoPE* and RayRoPE.</figcaption>
+    </figure>
+    <figure class="paperfig" data-fig-panel="3" hidden>
+      <a href="media/comparisons/scannetpp_probes.webp" target="_blank" rel="noopener" data-zoom><img loading="lazy" width="2000" height="918" src="media/comparisons/scannetpp_probes.webp" alt="Three fisheye targets rendered by one checkpoint with coordinate groups switched off, and the PSNR loss over all targets."></a>
+      <figcaption><span class="fig-tag">Fig. S5</span><b>Which coordinates the trained model uses.</b> One checkpoint evaluated intact, with the rotations of
+        one coordinate group set to zero, or with patch depths replaced by their per-view median. The three scenes were drawn
+        at random. Bars average three training seeds (dots).</figcaption>
+    </figure>
+    <figure class="paperfig" data-fig-panel="4" hidden>
+      <a href="media/comparisons/scenes11_depth.webp" target="_blank" rel="noopener" data-zoom><img loading="lazy" width="2000" height="1169" src="media/comparisons/scenes11_depth.webp" alt="Input image pairs, ground-truth point clouds and depth reconstructions at three RayRoPE ranges on three Scenes11 test scenes."></a>
+      <figcaption><span class="fig-tag">Fig. S7</span><b>The band changes 3D reconstruction on Scenes11.</b> Pixels of both input views are back-projected into
+        one frame with ground-truth depth or with the depth predicted at each range (73rd, 54th, and 98th percentiles of 243&times;-over-3&times; Abs Rel gains; 87th, 90th, and 78th over 3<sup>11</sup>). The four clouds of a row share viewpoint
+        and scale. Lower Abs Rel is better.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section id="guidelines">
+  <div class="sec-head">
+    <h2>8. Practical guidelines for geometric RoPE</h2>
+  </div>
+  <div class="guides">
+    <div class="guide">
+      <h3><span class="g-idx">1.</span> Set the band in image units, not via head size</h3>
+      <p>Specify the lowest and top frequency directly in rotations per patch or per image. On 256&times;256 views with 8-pixel patches, top frequencies of 0.3–3 rotations per patch (10–90 per image) performed reliably across all three encodings.</p>
+    </div>
+    <div class="guide">
+      <h3><span class="g-idx">2.</span> Keep and populate the span in small heads</h3>
+      <p>When small heads leave few channels per coordinate, preserve the target span and cover it with intermediate frequencies (for example, one ray with four frequencies spanning 243&times; at <i>d</i>&nbsp;=&nbsp;48 rather than truncating to 3&times;).</p>
+    </div>
+    <div class="guide">
+      <h3><span class="g-idx">3.</span> Avoid unconditional same-view damping</h3>
+      <p>Within one view, image coordinates do not depend on depth. Omitting WorldRoPE's projected patch footprint under 3<sup>11</sup> recovers 0.33&nbsp;dB at 25M and 0.20&nbsp;dB at 47M, reaching <span class="num" id="n-world"></span>&nbsp;dB over default 47M WorldRoPE (+0.17&nbsp;dB on a second seed).</p>
+    </div>
+    <div class="guide">
+      <h3><span class="g-idx">4.</span> Report and match bands in benchmarks</h3>
+      <p>State rotated coordinates, frequency counts, and spans alongside head dimension, and compare encodings at matched bands or across head sizes before attributing gaps to the geometric formulation.</p>
+    </div>
+  </div>
+</section>
+
+<section id="notes" class="fine">
+  <div class="notes-card">
+    <div class="sec-head">
+      <h2>Scenes and evaluation protocol</h2>
+    </div>
+    <ul>
+      <li><b>Paper figures.</b> The three scenes of Figs.&nbsp;1 and 5 of the paper. They were selected; the supplement
+        (Sec.&nbsp;G) gives the selection rule for Fig.&nbsp;1 and the percentiles of the views of Fig.&nbsp;5.</li>
+      <li><b>Random test scenes.</b> Eight test scenes drawn at random for the uncurated comparison in the supplement (Fig.&nbsp;S8),
+        opening on the middle target view to match Fig.&nbsp;S8 and selectable across all three target views with full camera-path videos. For 25M RayRoPE at 3&times;, Figs.&nbsp;5 and S8
+        show the single-ray model and this page the default three-ray model, so the PSNR values of that model differ.</li>
+      <li><b>Large differences.</b> Four scenes chosen from test scenes above the 99th percentile of the PSNR gain
+        of 243&times; over 3<sup>11</sup>.</li>
+      <li><b>Scene percentiles.</b> Beneath the explorer renderings, we report the scene-PSNR gain of 243&times; over 3&times; and over
+        3<sup>11</sup> together with its percentile across all 6,474 RealEstate10K test scenes.</li>
+      <li><b>Training &amp; evaluation.</b> RealEstate10K models train for 80,000 steps in the released WorldRoPE codebase with identical initialization and batch
+        order. PSNR, SSIM, and LPIPS cover the full test set (6,474 scenes, three target views
+        each) at 256&times;256 from two input views.</li>
+      <li><b>Multi-seed variance at 3<sup>11</sup>.</b> The 3<sup>11</sup> checkpoint shown in interactive renders reaches <span class="num" id="n-311"></span>&nbsp;dB; the four initial runs of this setting
+        span <span class="num" id="n-311lo"></span> to <span class="num" id="n-311hi"></span>&nbsp;dB (25.41&nbsp;dB on a fifth run).</li>
+      <li><b>Media format.</b> Trajectory videos interpolate recorded camera poses between the two context views (outside the test metric). Stills are <span id="still-fmt">WebP</span>; videos are <span id="media-fmt">H.264 MP4</span> at 2&times; spatial upscaling.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="cite" hidden>
+  <div class="sec-head">
+    <h2>BibTeX</h2>
+  </div>
+  <p class="release-links" id="release-links" hidden></p>
+  <div class="bibbox"><button type="button" class="copy" id="bib-copy">Copy BibTeX</button><pre class="bib" id="bib"></pre></div>
+</section>
+
+</main>
+
+<dialog class="lightbox" id="lightbox" aria-label="Full-resolution figure viewer">
+  <div class="lb-bar">
+    <span class="lb-caption" id="lb-cap"></span>
+    <div class="lb-actions">
+      <a class="lb-raw" id="lb-raw" href="#" target="_blank" rel="noopener">Open raw image&nbsp;&#8599;</a>
+      <button type="button" class="lb-close" id="lb-close" aria-label="Close viewer">&times; Close</button>
+    </div>
+  </div>
+  <div class="lb-stage" id="lb-stage">
+    <img id="lb-img" alt="">
+  </div>
+</dialog>
+
+<footer><div class="wrap"><span id="foot"></span></div></footer>
+
+<script src="config.js"></script>
+<script src="data.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>
