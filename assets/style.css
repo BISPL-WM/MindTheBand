@@ -1723,3 +1723,769 @@ footer {
   .pop { opacity: 1; animation: none !important; }
   .bar .bf, .t-tile, .t-tile img { transition: none; }
 }
+
+
+/* ==========================================================================
+   Public Project Page Redesign (Generous Typography, Centered Hero, Airy Rhythm)
+   ========================================================================== */
+body.is-public {
+  background: #f8fafc;
+  font-size: 18.5px;
+  line-height: 1.7;
+  color: #1e293b;
+}
+
+.is-public .wrap,
+.is-public .topbar-inner,
+.is-public .cottage-shell {
+  max-width: 1140px;
+}
+
+.is-public .topbar {
+  background: rgba(255, 255, 255, 0.88);
+  border-bottom: 1px solid rgba(203, 213, 225, 0.7);
+}
+.is-public .topbar-inner {
+  height: 62px;
+}
+.is-public .brand {
+  font-size: 16.5px;
+  font-weight: 740;
+}
+.is-public .topnav {
+  gap: 4px;
+}
+.is-public .topnav a {
+  font-size: 14.5px;
+  font-weight: 560;
+  padding: 7px 14px;
+}
+
+/* Bold, centered academic hero */
+.is-public .head {
+  padding: 64px 0 44px;
+  border-bottom: 0;
+  background:
+    radial-gradient(64% 85% at 50% 0%, rgba(29, 78, 216, 0.065) 0%, rgba(197, 48, 48, 0.025) 48%, rgba(255, 255, 255, 0) 100%),
+    #ffffff;
+  text-align: center;
+}
+.is-public .head .wrap {
+  display: block;
+}
+.is-public .paper-meta {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px 10px;
+  padding: 6px 18px;
+  margin: 0 auto 24px;
+  background: #f1f5f9;
+  border: 1px solid #dbe4f0;
+  border-radius: 999px;
+}
+.is-public .venue-pill {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--accent-ink);
+}
+.is-public .meta-topic {
+  font-size: 13.5px;
+  font-weight: 520;
+  color: #475569;
+}
+.is-public h1 .t1 {
+  font-size: clamp(46px, 6.2vw, 72px);
+  line-height: 1.03;
+  letter-spacing: -0.042em;
+  font-weight: 820;
+  color: var(--ink);
+}
+.is-public h1 .sub {
+  font-size: clamp(20px, 2.4vw, 27px);
+  line-height: 1.32;
+  letter-spacing: -0.018em;
+  font-weight: 500;
+  color: #334155;
+  margin: 14px auto 0;
+  max-width: 36ch;
+}
+.is-public .authors {
+  margin: 28px auto 0;
+  padding: 0;
+  border: 0;
+  text-align: center;
+}
+.is-public .authors .names {
+  justify-content: center;
+  gap: 8px 30px;
+  font-size: 20px;
+  font-weight: 620;
+}
+.is-public .authors .au a {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: rgba(29, 78, 216, 0.28);
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1.5px;
+  transition: color 0.15s, text-decoration-color 0.15s;
+}
+.is-public .authors .au a:hover {
+  color: var(--accent);
+  text-decoration-color: var(--accent);
+}
+.is-public .authors .aff {
+  margin-top: 10px;
+  font-size: 16.5px;
+  color: #475569;
+}
+.is-public .authors .note {
+  margin-top: 6px;
+  font-size: 13.5px;
+  color: var(--faint);
+}
+.is-public .hero-bar {
+  justify-content: center;
+  margin-top: 30px;
+}
+.is-public .links {
+  justify-content: center;
+  gap: 11px;
+}
+.is-public .links a,
+.is-public .links .pill-soon {
+  height: 46px;
+  padding: 0 22px;
+  border-radius: 999px;
+  font-size: 16px;
+  font-weight: 620;
+  gap: 8px;
+}
+.is-public .links a {
+  box-shadow: 0 6px 16px -8px rgba(15, 23, 42, 0.35);
+  transition: transform 0.15s, background-color 0.15s, border-color 0.15s, box-shadow 0.15s;
+}
+.is-public .links a:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 22px -10px rgba(29, 78, 216, 0.4);
+}
+.is-public .links a.secondary {
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.05);
+}
+.is-public .links a.secondary:hover {
+  box-shadow: 0 6px 14px -6px rgba(15, 23, 42, 0.12);
+}
+.is-public .links svg {
+  width: 17px;
+  height: 17px;
+}
+.is-public .links .pill-soon {
+  background: rgba(248, 250, 252, 0.85);
+  color: #64748b;
+  border: 1px dashed #cbd5e1;
+}
+.is-public .links .pill-soon em {
+  font-size: 11px;
+  font-weight: 650;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: #e2e8f0;
+  color: #475569;
+}
+
+/* Interactive cottage hero card with seamless backdrop bridge */
+.is-public .cottage-demo {
+  margin: 0;
+  padding: 4px 0 8px;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 46%);
+}
+.is-public .cottage-card {
+  border-radius: 16px;
+  padding: 22px 24px 18px;
+  border-color: #dbe4f0;
+  box-shadow: 0 22px 50px -24px rgba(15, 23, 42, 0.16);
+}
+.is-public .cottage-stage h2 {
+  font-size: 14.5px;
+  margin-bottom: 10px;
+}
+.is-public .cottage-stage .stage-idx {
+  font-size: 12px;
+  padding: 3px 7px;
+}
+.is-public .capture span {
+  font-size: 12px;
+  padding: 4px 9px;
+}
+.is-public #cottage-quality {
+  font-size: 13px;
+  padding: 4px 11px;
+}
+.is-public .freq-badge,
+.is-public .orbit-hint {
+  font-size: 12px;
+  padding: 3.5px 9px;
+}
+.is-public .band-desk {
+  margin: 18px -24px -18px;
+  padding: 15px 24px;
+  border-radius: 0 0 16px 16px;
+}
+.is-public .band-desk > label {
+  font-size: 15.5px;
+}
+.is-public .band-stops button {
+  font-size: 13.5px;
+}
+.is-public .cottage-demo figcaption {
+  font-size: 16px;
+  line-height: 1.6;
+  text-align: center;
+  margin-top: 16px;
+  color: var(--muted);
+}
+.is-public .cottage-demo figcaption b {
+  color: var(--ink);
+}
+
+/* Key quantitative findings ribbon */
+.is-public .facts {
+  margin-top: 44px;
+  border-radius: 16px;
+  border-color: #dbe4f0;
+  box-shadow: 0 14px 32px -22px rgba(15, 23, 42, 0.12);
+}
+.is-public .fact {
+  padding: 28px 30px;
+  border-top: 3px solid transparent;
+}
+.is-public .fact-blue { border-top-color: var(--world); }
+.is-public .fact-mid  { border-top-color: #3b82f6; }
+.is-public .fact-red  { border-top-color: var(--ray); }
+.is-public .fact-k {
+  font: 680 12.5px/1.2 var(--mono);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #475569;
+  margin-bottom: 10px;
+}
+.is-public .fact .v {
+  font-size: clamp(34px, 3.8vw, 46px);
+  letter-spacing: -0.035em;
+}
+.is-public .fact p {
+  font-size: 15.5px;
+  line-height: 1.55;
+  color: #475569;
+  margin-top: 10px;
+}
+
+/* Airy section rhythm & larger headings */
+.is-public section {
+  padding: 78px 0 8px;
+  scroll-margin-top: 76px;
+}
+.is-public section.first {
+  padding-top: 64px;
+}
+.is-public section + section {
+  border-top: 1px solid rgba(203, 213, 225, 0.55);
+  margin-top: 62px;
+}
+.is-public .facts + section {
+  border-top: 0;
+  margin-top: 8px;
+}
+.is-public .eyebrow {
+  display: inline-block;
+  font: 700 13px/1.2 var(--mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 10px;
+}
+.is-public .sec-head {
+  max-width: 720px;
+  margin-bottom: 28px;
+}
+.is-public .center-head {
+  text-align: center;
+  margin-inline: auto;
+}
+.is-public h2 {
+  font-size: clamp(30px, 3.4vw, 40px);
+  line-height: 1.13;
+  letter-spacing: -0.03em;
+  font-weight: 780;
+  margin: 0 0 14px;
+}
+.is-public .sec-head p {
+  font-size: 18.5px;
+  line-height: 1.68;
+  color: #334155;
+}
+.is-public .sec-head strong {
+  color: var(--ink);
+  font-weight: 660;
+}
+.is-public .split {
+  grid-template-columns: minmax(0, 4.2fr) minmax(0, 7.8fr);
+  gap: clamp(30px, 4.2vw, 56px);
+  align-items: center;
+}
+.is-public .subdeck {
+  margin-top: 42px;
+}
+.is-public .subdeck-title {
+  font: 680 14px/1.3 var(--mono);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+  margin: 0 0 10px;
+}
+
+/* Centered editorial Abstract card */
+.is-public .abstract-card {
+  display: block;
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 40px 46px;
+  border-radius: 16px;
+  border-color: #dbe4f0;
+  box-shadow: 0 14px 36px -22px rgba(15, 23, 42, 0.12);
+}
+.is-public .abstract-card h2 {
+  font-size: clamp(24px, 2.5vw, 30px);
+  margin-bottom: 18px;
+}
+.is-public .abstract-body p {
+  font-size: 18px;
+  line-height: 1.8;
+  color: #1e293b;
+  max-width: none;
+  margin-bottom: 16px;
+}
+.is-public .abstract-body p:last-child {
+  margin-bottom: 0;
+}
+
+/* Inline & display mathematical typesetting */
+.is-public .math {
+  font-family: "STIX Two Math", "STIX Two Text", "Cambria Math", "Latin Modern Math", "Times New Roman", Georgia, serif;
+  font-size: 1.06em;
+  white-space: nowrap;
+}
+.is-public .math i {
+  font-style: italic;
+}
+
+/* Larger, clearer captions, controls, charts, tables, bars */
+.is-public .caption,
+.is-public figcaption {
+  font-size: 15.5px;
+  line-height: 1.62;
+}
+.is-public .hint,
+.is-public .vctrl,
+.is-public .ctrl,
+.is-public .under {
+  font-size: 15px;
+}
+.is-public .seg button {
+  font-size: 14.5px;
+  padding: 6px 14px;
+}
+.is-public .readout {
+  font-size: 14.5px;
+}
+.is-public .eq {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+  max-width: 360px;
+  margin-top: 22px;
+  padding: 18px 22px;
+  background: var(--white);
+  border: 1px solid #dbe4f0;
+  border-radius: 14px;
+  box-shadow: 0 10px 26px -20px rgba(15, 23, 42, 0.14);
+  font-family: "STIX Two Math", "STIX Two Text", "Cambria Math", "Latin Modern Math", "Times New Roman", Georgia, serif;
+  font-size: 20px;
+  line-height: 1.15;
+  color: var(--ink);
+}
+.is-public .eq-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  white-space: nowrap;
+}
+.is-public .eq-row + .eq-row {
+  padding-top: 12px;
+  border-top: 1px solid #eef2f7;
+}
+.is-public .eq-tag {
+  font: 650 11.5px/1 var(--mono);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--faint);
+  width: 72px;
+  flex: none;
+}
+.is-public .eq-row.r .eq-tag,
+.is-public .eq-row.r .eq-expr {
+  color: var(--ray);
+}
+.is-public .eq-expr {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.34em;
+  font-weight: 400;
+}
+.is-public .eq-lhs {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-width: 2.4em;
+}
+.is-public .eq-rhs {
+  display: inline-flex;
+  align-items: center;
+}
+.is-public .eq i {
+  font-style: italic;
+}
+.is-public .eq .mop {
+  font-style: normal;
+  padding-right: 0.06em;
+}
+.is-public .eq .meq {
+  padding: 0 0.04em;
+}
+.is-public .eq .mfrac {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  vertical-align: middle;
+  font-size: 0.9em;
+  line-height: 1.18;
+}
+.is-public .eq .mnum {
+  padding: 0 0.28em 0.14em;
+  border-bottom: 1.2px solid currentColor;
+}
+.is-public .eq .mden {
+  padding: 0.16em 0.28em 0;
+}
+.is-public .eq .mabs-tall {
+  display: inline-flex;
+  align-items: stretch;
+  gap: 0.14em;
+}
+.is-public .eq .mabs-tall::before,
+.is-public .eq .mabs-tall::after {
+  content: "";
+  width: 1.2px;
+  background: currentColor;
+  margin: 0.05em 0;
+}
+.is-public .eq sup {
+  font-size: 0.68em;
+  line-height: 0;
+  vertical-align: 0.48em;
+}
+.is-public .teaser,
+.is-public .panel,
+.is-public .chartbox,
+.is-public .video-card,
+.is-public .side,
+.is-public .paperfig {
+  border-radius: 14px;
+  border-color: #dbe4f0;
+  box-shadow: 0 12px 30px -20px rgba(15, 23, 42, 0.11);
+}
+.is-public .plateau-tag {
+  font-size: 12px;
+  padding: 2px 10px;
+  top: -13px;
+}
+.is-public .t-tile .tl {
+  font-size: 16.5px;
+}
+.is-public .t-tile .tf {
+  font-size: 13px;
+}
+.is-public .t-curve text {
+  font-size: 13px;
+}
+.is-public .t-read {
+  font-size: 15.5px;
+}
+.is-public .switch {
+  font-size: 15px;
+  padding: 7px 16px 7px 9px;
+}
+.is-public .cols div {
+  font-size: 16px;
+}
+.is-public .cols .s {
+  font-size: 13px;
+}
+.is-public .bar .bl {
+  font-size: 16px;
+  margin-bottom: 7px;
+}
+.is-public .bar .bl b {
+  font-size: 15.5px;
+}
+.is-public .bar .bt {
+  height: 14px;
+}
+.is-public .bars {
+  gap: 16px;
+}
+.is-public .chartbox text {
+  font-size: 13px;
+}
+.is-public .chartbox .lbl {
+  font-size: 14.5px;
+}
+.is-public .group .gl {
+  font-size: 12.5px;
+}
+.is-public .thumbs img {
+  width: 60px;
+  height: 60px;
+}
+.is-public .hold-pill {
+  font-size: 12px;
+  padding: 4px 11px;
+}
+.is-public .chart text {
+  font-size: 11.5px;
+}
+.is-public .stops button {
+  font-size: 14.5px;
+  padding: 8px 4px;
+}
+.is-public table.kv {
+  font-size: 15px;
+}
+.is-public table.kv td:last-child {
+  font-size: 14.5px;
+}
+.is-public .under img {
+  width: 72px;
+  height: 72px;
+}
+.is-public table.res {
+  font-size: 15.5px;
+  max-width: 780px;
+}
+.is-public table.res th {
+  font-size: 14px;
+  padding: 11px 18px;
+}
+.is-public table.res td {
+  font-size: 15px;
+  padding: 11px 18px;
+}
+.is-public table.res td:first-child {
+  font-size: 15.5px;
+}
+.is-public .still .c {
+  font-size: 14.5px;
+}
+.is-public .fig-tabs button,
+.is-public .fig-all-btn {
+  font-size: 14.5px;
+  padding: 9px 17px;
+}
+.is-public .fig-tag {
+  font-size: 12.5px;
+  padding: 3px 8px;
+}
+.is-public .paperfig a::after {
+  font-size: 12.5px;
+  padding: 5px 12px;
+}
+
+/* Spacious guideline cards */
+.is-public .guides {
+  gap: 22px;
+}
+.is-public .guide {
+  padding: 28px 30px;
+  border-radius: 14px;
+  border-color: #dbe4f0;
+  box-shadow: 0 10px 26px -18px rgba(15, 23, 42, 0.09);
+}
+.is-public .guide h3 {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+.is-public .g-idx {
+  color: var(--accent);
+  margin-right: 6px;
+}
+.is-public .guide p {
+  font-size: 16.5px;
+  line-height: 1.65;
+  color: #334155;
+}
+
+/* Collapsible protocol details (removes bottom wall of fine print) */
+.is-public #notes {
+  padding-top: 36px;
+  margin-top: 44px;
+  border-top: 0;
+}
+.protocol-fold {
+  background: var(--white);
+  border: 1px solid #dbe4f0;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+.protocol-fold summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 18px 26px;
+  font-size: 16.5px;
+  font-weight: 640;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  user-select: none;
+  transition: background-color 0.15s;
+}
+.protocol-fold summary::-webkit-details-marker {
+  display: none;
+}
+.protocol-fold summary:hover {
+  background: var(--surface);
+}
+.protocol-fold summary::after {
+  content: "+";
+  font: 500 22px/1 var(--mono);
+  color: var(--muted);
+}
+.protocol-fold[open] summary {
+  border-bottom: 1px solid var(--line);
+  background: var(--surface);
+}
+.protocol-fold[open] summary::after {
+  content: "−";
+}
+.is-public .protocol-fold .notes-card {
+  background: var(--white);
+  border: 0;
+  border-radius: 0;
+  padding: 24px 28px;
+}
+.is-public .fine li {
+  font-size: 15.5px;
+  line-height: 1.62;
+  margin-bottom: 12px;
+}
+
+/* Centered BibTeX */
+.is-public #cite .bibbox {
+  margin: 0 auto;
+  max-width: 840px;
+}
+.is-public pre.bib {
+  font-size: 14.5px;
+  line-height: 1.68;
+  padding: 24px 26px;
+  border-radius: 14px;
+  border-color: #dbe4f0;
+}
+.is-public .copy {
+  top: 16px;
+  right: 16px;
+  font-size: 14px;
+  padding: 6px 16px;
+}
+.is-public .release-links {
+  font-size: 15.5px;
+  margin-top: 6px;
+}
+.is-public footer {
+  font-size: 15px;
+  margin-top: 78px;
+  padding: 30px 0 60px;
+}
+
+/* Public responsive polish */
+@media (max-width: 960px) {
+  .is-public .split {
+    grid-template-columns: 1fr;
+    gap: 26px;
+  }
+  .is-public .authors {
+    text-align: center;
+  }
+  .is-public .authors .names,
+  .is-public .hero-bar {
+    justify-content: center;
+  }
+  .is-public .abstract-card {
+    padding: 30px 28px;
+  }
+  .is-public .fact {
+    border-top: 0;
+    border-left: 3px solid transparent;
+  }
+  .is-public .fact-blue { border-left-color: var(--world); }
+  .is-public .fact-mid  { border-left-color: #3b82f6; }
+  .is-public .fact-red  { border-left-color: var(--ray); }
+}
+
+@media (max-width: 720px) {
+  body.is-public {
+    font-size: 16.5px;
+  }
+  .is-public .head {
+    padding: 40px 0 28px;
+  }
+  .is-public .authors .names {
+    font-size: 17.5px;
+    gap: 6px 18px;
+  }
+  .is-public .links a,
+  .is-public .links .pill-soon {
+    height: 40px;
+    padding: 0 16px;
+    font-size: 14.5px;
+  }
+  .is-public section {
+    padding-top: 52px;
+  }
+  .is-public section + section {
+    margin-top: 40px;
+  }
+  .is-public .sec-head p,
+  .is-public .abstract-body p {
+    font-size: 16.5px;
+  }
+  .is-public .eq {
+    font-size: 18px;
+    padding: 15px 18px;
+    max-width: none;
+  }
+  .is-public .fact {
+    padding: 22px 24px;
+  }
+  .is-public .band-stops button {
+    font-size: 11.5px;
+  }
+  .is-public .capture span {
+    font-size: 10px;
+  }
+}

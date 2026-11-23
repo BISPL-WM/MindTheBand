@@ -80,17 +80,7 @@
     $('venue').textContent = S.venue || '';
     if (S.public) {
       document.body.classList.add('is-public');
-      $('showcase').hidden = false;
-      $('overview').classList.remove('first');
-      $('facts-strip').style.marginTop = '24px';
-      $('main-content').insertBefore($('facts-strip'), $('main-content').firstChild);
-      $('facts-strip').after($('abstract'), $('overview'), $('showcase'), $('sweep'));
-      if ($('overview-desc')) $('overview-desc').textContent = 'One-minute silent overview: the task, how geometric RoPE writes camera geometry as waves from coarse to fine, what a band that is too narrow or too wide does to the rendered view, and how the head size moves the band.';
-      if ($('overview-hint')) $('overview-hint').textContent = 'Silent H.264 MP4 (1920×1080, 1:00). Rendered views and numbers come from our RealEstate10K evaluation; the point cloud is an illustration that the models never see.';
-      var nav = $('paper-nav');
-      var navAbs = nav.querySelector('a[href="#abstract"]'), navVid = nav.querySelector('a[href="#overview"]');
-      if (navAbs && navVid) nav.insertBefore(navAbs, navVid);
-
+      if ($('showcase')) $('showcase').hidden = false;
       var cottage = document.createElement('script');
       cottage.src = 'assets/cottage.js';
       document.body.appendChild(cottage);
@@ -215,7 +205,7 @@
       showTeaser();
     }, 1900);
   }
-  var TC = { H: 152, top: 15, bot: 30, y0: 25.0, y1: 27.0 };
+  var TC = { H: 160, top: 16, bot: 34, y0: 25.0, y1: 27.0 };
   function tx(k, w) { return k / 12 * w; }
   function ty(v) { return TC.top + (TC.y1 - v) / (TC.y1 - TC.y0) * (TC.H - TC.top - TC.bot); }
   function drawTeaserCurve() {
@@ -275,15 +265,15 @@
     var cv = $('c-concept'), g = fit(cv), ctx = g.ctx, w = g.w, pad = 12, f = CA.f;
     var xs = function (x) { return pad + (x + 0.5) / 8 * (w - 2 * pad); };
     function lane(top, title, pts, color, grid) {
-      var yc = top + 62, A = 24, yb = top + 100, yd = top + 132, r = Math.min(12, (w - 2 * pad) / 8 * 0.3), i, x;
-      text(ctx, title, pad, top + 15, '620 13.5px ' + SANS, C.ink);
+      var yc = top + 64, A = 24, yb = top + 102, yd = top + 134, r = Math.min(12, (w - 2 * pad) / 8 * 0.3), i, x;
+      text(ctx, title, pad, top + 16, '640 15px ' + SANS, C.ink);
       var note = '', nc = C.faint, fa = f - Math.round(f);
       if (grid) {
         if (Math.abs(f - 1) < 0.035) { note = 'every token gets identical phase'; nc = C.ray; }
         else if (f > 0.5) note = 'aliases to ' + Math.abs(fa).toFixed(2) + ' rot./patch';
       } else if (Math.abs(f - 1) < 0.035) { note = 'sub-patch offsets stay distinct'; nc = C.world; }
-      if (note && w > 440) text(ctx, note, w - pad, top + 15, '500 11.5px ' + MONO, nc, 'right');
-      else if (note) text(ctx, note, pad, top + 31, '500 11px ' + MONO, nc);
+      if (note && w > 500) text(ctx, note, w - pad, top + 16, '550 12.5px ' + MONO, nc, 'right');
+      else if (note) text(ctx, note, pad, top + 34, '550 12px ' + MONO, nc);
       ctx.strokeStyle = C.line; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(pad, yc); ctx.lineTo(w - pad, yc); ctx.stroke();
       for (i = 0; i < 8; i++) {
         ctx.fillStyle = C.track; ctx.beginPath();
@@ -324,7 +314,7 @@
     anims.rule.dirty = true;
   }
   function drawRule() {
-    var cv = $('c-rule'), g = fit(cv), ctx = g.ctx, w = g.w, h = g.h, padL = 12, padR = 12, rowH = 69, axisY = 4 * rowH + 6;
+    var cv = $('c-rule'), g = fit(cv), ctx = g.ctx, w = g.w, h = g.h, padL = 12, padR = 12, rowH = 73, axisY = 4 * rowH + 6;
     var xs = function (f) { return padL + (Math.log(f) / Math.LN10 + 3) / 8 * (w - padL - padR); };
     var colors = { ray: C.ray, uro: C.uro, world: C.world }, t = ease(RA.t);
     var bx0 = xs(D.claims.good[0]), bx1 = xs(D.claims.good[1]);
@@ -332,14 +322,14 @@
     ctx.strokeStyle = C.bandBorder; ctx.lineWidth = 1; ctx.setLineDash([3, 3]);
     ctx.beginPath(); ctx.moveTo(bx0, 0); ctx.lineTo(bx0, axisY); ctx.moveTo(bx1, 0); ctx.lineTo(bx1, axisY); ctx.stroke();
     ctx.setLineDash([]);
-    text(ctx, '0.3–3', (bx0 + bx1) / 2, axisY - 6, '600 10.5px ' + MONO, C.bandInk, 'center');
+    text(ctx, '0.3–3', (bx0 + bx1) / 2, axisY - 6, '650 12px ' + MONO, C.bandInk, 'center');
     D.bands.forEach(function (row, r) {
-      var y = r * rowH, col = colors[row.color], cur = row.grids[RA.ds[RA.idx]], old = row.grids[RA.ds[RA.prev]], yl = y + 50;
+      var y = r * rowH, col = colors[row.color], cur = row.grids[RA.ds[RA.idx]], old = row.grids[RA.ds[RA.prev]], yl = y + 54;
       var top = cur[cur.length - 1], ratio = top / cur[0], k = Math.round(Math.log(ratio) / Math.log(3));
       var range = (k > 5 && Math.abs(Math.pow(3, k) / ratio - 1) < 0.01) ? '3' + sup(k) : Math.round(ratio) + '×';
-      text(ctx, row.label, padL, y + 16, '630 13.5px ' + SANS, col);
+      text(ctx, row.label, padL, y + 17, '650 15px ' + SANS, col);
       text(ctx, cur.length + ' frequencies · top ' + (top >= 1000 ? Math.round(top).toLocaleString('en-US') : freq(top)) + ' · range ' + range,
-        padL, y + 33, '500 11.5px ' + MONO, C.muted);
+        padL, y + 36, '500 12.5px ' + MONO, C.muted);
       function ticks(grid, alpha, lw) {
         if (alpha <= 0) return;
         ctx.globalAlpha = alpha; ctx.strokeStyle = col; ctx.lineWidth = 1;
@@ -358,15 +348,15 @@
     for (var e = -3; e <= 5; e++) {
       var x = xs(Math.pow(10, e));
       ctx.beginPath(); ctx.moveTo(x, axisY); ctx.lineTo(x, axisY + 5); ctx.stroke();
-      if (w > 520 || e % 2 !== 0) text(ctx, e < 3 ? String(Math.pow(10, e)) : '10' + sup(e), x, axisY + 18, '11px ' + MONO, C.faint, e === -3 ? 'left' : e === 5 ? 'right' : 'center');
+      if (w > 520 || e % 2 !== 0) text(ctx, e < 3 ? String(Math.pow(10, e)) : '10' + sup(e), x, axisY + 20, '12px ' + MONO, C.faint, e === -3 ? 'left' : e === 5 ? 'right' : 'center');
     }
-    text(ctx, 'frequency (rotations per patch)', w - padR, h - 5, '11px ' + MONO, C.faint, 'right');
+    text(ctx, 'frequency (rotations per patch)', w - padR, h - 6, '12px ' + MONO, C.faint, 'right');
   }
 
   /* ---------- 03: head-size sweep ---------- */
   function drawRank() {
-    var svg = $('c-rank'), w = svg.clientWidth || 600, narrow = w < 560, H = narrow ? 310 : 344;
-    var padL = 60, padR = narrow ? 14 : 198, top = 16, bot = 68, y0 = 25.4, y1 = 27.0, inset = 44;
+    var svg = $('c-rank'), w = svg.clientWidth || 600, narrow = w < 600, H = narrow ? 320 : 356;
+    var padL = 62, padR = narrow ? 14 : 246, top = 16, bot = 72, y0 = 25.4, y1 = 27.0, inset = 44;
     var X = function (i) { return padL + inset + i / 2 * (w - padL - padR - 2 * inset); };
     var Y = function (v) { return top + (y1 - v) / (y1 - y0) * (H - top - bot); };
     var colors = { ray: C.ray, uro: C.uro, world: C.world }, s = '';
@@ -398,9 +388,9 @@
       '<text transform="translate(' + (gx - 8) + ',' + ((Y(a) + Y(b)) / 2) + ') rotate(-90)" text-anchor="middle" style="fill:' + C.ink + ';font-weight:650">' + (a - b).toFixed(1) + ' dB</text></g>';
     if (!narrow) {
       ends.sort(function (p, q) { return p.y - q.y; });
-      for (var i = 1; i < ends.length; i++) if (ends[i].y - ends[i - 1].y < 17) ends[i].y = ends[i - 1].y + 17;
+      for (var i = 1; i < ends.length; i++) if (ends[i].y - ends[i - 1].y < 20) ends[i].y = ends[i - 1].y + 20;
       ends.forEach(function (e) {
-        s += '<text class="lbl pop' + (e.dash ? ' d2' : '') + '" x="' + (X(2) + 12) + '" y="' + (e.y + 4.5) + '" style="fill:' + e.col + '">' + e.label + '</text>';
+        s += '<text class="lbl pop' + (e.dash ? ' d2' : '') + '" x="' + (X(2) + 12) + '" y="' + (e.y + 5) + '" style="fill:' + e.col + '">' + e.label + '</text>';
       });
     }
     svg.innerHTML = s;
@@ -441,10 +431,10 @@
     var cv = $('c-why'), g = fit(cv), ctx = g.ctx, w = g.w, pad = 12, N = Math.pow(10, WA.logN), box = WA.mode === 'box';
     var Nd = Math.min(N, 24), mu = 0.2 * Math.sin(2 * Math.PI * WA.mt / 5.5);
     var yc = 90, A = 38, xs = function (u) { return pad + (u + 1.7) / 3.4 * (w - 2 * pad); };
-    text(ctx, box ? 'Average over the interval [μ−Δ, μ+Δ]' : 'Average under a Gaussian window', pad, 16, '620 13.5px ' + SANS, C.ink);
+    text(ctx, box ? 'Average over the interval [μ − Δ, μ + Δ]' : 'Average under a Gaussian window', pad, 17, '640 15px ' + SANS, C.ink);
     var nTxt = (N >= 10 ? N.toFixed(0) : N >= 1 ? N.toFixed(1) : N.toFixed(2)) + ' rotations inside' + (N > 24 ? ' (drawn as 24)' : '');
-    if (w > 470) text(ctx, nTxt, w - pad, 16, '500 12px ' + MONO, C.muted, 'right');
-    else text(ctx, nTxt, pad, 32, '500 11.5px ' + MONO, C.muted);
+    if (w > 500) text(ctx, nTxt, w - pad, 17, '550 13px ' + MONO, C.muted, 'right');
+    else text(ctx, nTxt, pad, 34, '550 12.5px ' + MONO, C.muted);
     var wgt = function (u) { return box ? (Math.abs(u - mu) <= 1 ? 1 : 0) : Math.exp(-Math.pow(u - mu, 2) / (2 * SIG * SIG)); };
     var wave = function (u) { return Math.cos(Math.PI * Nd * u); };
     ctx.strokeStyle = C.line; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(pad, yc); ctx.lineTo(w - pad, yc); ctx.stroke();
@@ -463,33 +453,33 @@
     else for (u = -1.7; u <= 1.7001; u += 0.01) { var yb = yc - (A + 6) * wgt(u); if (u === -1.7) ctx.moveTo(xs(u), yb); else ctx.lineTo(xs(u), yb); }
     ctx.stroke(); ctx.setLineDash([]);
     ctx.fillStyle = C.ink; ctx.fillRect(xs(mu) - 0.75, yc + A + 6, 1.5, 8);
-    text(ctx, 'μ', xs(mu), yc + A + 26, '500 12px ' + MONO, C.ink, 'center');
+    text(ctx, 'μ', xs(mu), yc + A + 27, '550 13px ' + MONO, C.ink, 'center');
     if (box) [-1, 1].forEach(function (sg) {
       var ue = mu + sg, ye = yc - A * wave(ue);
       ctx.fillStyle = C.ray; ctx.beginPath(); ctx.arc(xs(ue), ye, 5, 0, 7); ctx.fill();
       ctx.strokeStyle = '#fff'; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.arc(xs(ue), ye, 5, 0, 7); ctx.stroke();
-      text(ctx, sg < 0 ? 'μ−Δ' : 'μ+Δ', xs(ue), yc + A + 26, '500 12px ' + MONO, C.ray, 'center');
+      text(ctx, sg < 0 ? 'μ − Δ' : 'μ + Δ', xs(ue), yc + A + 27, '550 13px ' + MONO, C.ray, 'center');
     });
 
     // Two live magnitude meters
     var env = box && N > 2, o = env ? Math.min(1, 1 / (Math.PI * N)) : outOf(N), gr = env ? 1 : gradOf(N);
     function meter(my, label, val, color, note) {
-      text(ctx, label, pad, my, '550 13px ' + SANS, C.ink);
-      text(ctx, note + (val >= 0.995 ? val.toFixed(2) : val < 0.01 ? val.toFixed(3) : val.toFixed(2)), w - pad, my, '600 12.5px ' + MONO, color, 'right');
-      ctx.fillStyle = C.track; ctx.fillRect(pad, my + 7, w - 2 * pad, 9);
-      ctx.fillStyle = color; ctx.fillRect(pad, my + 7, (w - 2 * pad) * Math.min(1, val / 1.05), 9);
+      text(ctx, label, pad, my, '600 14px ' + SANS, C.ink);
+      text(ctx, note + (val >= 0.995 ? val.toFixed(2) : val < 0.01 ? val.toFixed(3) : val.toFixed(2)), w - pad, my, '650 13.5px ' + MONO, color, 'right');
+      ctx.fillStyle = C.track; ctx.fillRect(pad, my + 8, w - 2 * pad, 10);
+      ctx.fillStyle = color; ctx.fillRect(pad, my + 8, (w - 2 * pad) * Math.min(1, val / 1.05), 10);
     }
-    meter(182, 'Output  |Φ|', o, C.ink, env ? 'at most ' : '');
-    meter(218, 'Gradient  Δ·|∂Φ/∂μ|', gr, C.ray, env ? 'up to ' : '');
+    meter(184, 'Output  |Φ|', o, C.ink, env ? 'at most ' : '');
+    meter(222, 'Gradient  Δ·|∂Φ/∂μ|', gr, C.ray, env ? 'up to ' : '');
 
     // Envelope plot against rotations inside the interval (markers cleanly above the top axis)
-    var pt = 276, pb = 378, pl = pad + 26, pr = w - pad;
+    var pt = 282, pb = 382, pl = pad + 28, pr = w - pad;
     var lx = function (n) { return pl + (Math.log(n) / Math.LN10 + 1) / 3.6 * (pr - pl); };
     var py = function (val) { return pb - val / 1.1 * (pb - pt); };
     ctx.strokeStyle = C.line; ctx.lineWidth = 1;
     [0, 0.5, 1].forEach(function (val) {
       ctx.beginPath(); ctx.moveTo(pl, py(val)); ctx.lineTo(pr, py(val)); ctx.stroke();
-      text(ctx, String(val), pl - 6, py(val) + 4, '11px ' + MONO, C.faint, 'right');
+      text(ctx, String(val), pl - 6, py(val) + 4, '12px ' + MONO, C.faint, 'right');
     });
 
     // Paper reference guides (243x and 3^11 from Fig. 2(c)) placed cleanly above the top axis
@@ -499,7 +489,7 @@
       ctx.beginPath(); ctx.moveTo(mx, pt); ctx.lineTo(mx, pb); ctx.stroke(); ctx.setLineDash([]);
       ctx.fillStyle = C.ray;
       ctx.beginPath(); ctx.moveTo(mx, pt + 1); ctx.lineTo(mx - 3.5, pt - 5); ctx.lineTo(mx + 3.5, pt - 5); ctx.fill();
-      text(ctx, m[1], mx, pt - 9, '650 10.5px ' + MONO, C.ray, 'center');
+      text(ctx, m[1], mx, pt - 9, '650 12px ' + MONO, C.ray, 'center');
     });
 
     [['gradient', gradOf, C.ray, 'rgba(191,44,35,0.20)'], ['output', outOf, C.ink, 'rgba(21,23,28,0.16)']].forEach(function (cfg) {
@@ -513,8 +503,8 @@
       topPts.forEach(function (p, i) { if (i) ctx.lineTo(p[0], p[1]); else ctx.moveTo(p[0], p[1]); });
       ctx.stroke();
     });
-    text(ctx, 'gradient', lx(18), py(1) - 6, '620 12px ' + SANS, C.ray, 'center');
-    text(ctx, 'output', lx(0.1) + 6, py(0.76), '620 12px ' + SANS, C.ink);
+    text(ctx, 'gradient', lx(18), py(1) - 6, '640 13px ' + SANS, C.ray, 'center');
+    text(ctx, 'output', lx(0.1) + 6, py(0.76), '640 13px ' + SANS, C.ink);
 
     ctx.strokeStyle = C.ink; ctx.lineWidth = 1; ctx.setLineDash([3, 3]);
     ctx.beginPath(); ctx.moveTo(lx(N), pt); ctx.lineTo(lx(N), pb); ctx.stroke(); ctx.setLineDash([]);
@@ -524,17 +514,25 @@
     ctx.strokeStyle = C.faint; ctx.beginPath(); ctx.moveTo(pl, pb); ctx.lineTo(pr, pb); ctx.stroke();
     [0.1, 1, 10, 100].forEach(function (n) {
       ctx.beginPath(); ctx.moveTo(lx(n), pb); ctx.lineTo(lx(n), pb + 4); ctx.stroke();
-      text(ctx, String(n), lx(n), pb + 16, '11px ' + MONO, C.faint, 'center');
+      text(ctx, String(n), lx(n), pb + 18, '12px ' + MONO, C.faint, 'center');
     });
-    text(ctx, w > 480 ? 'rotations inside the interval (red guides: Fig. 2(c) example)' : 'rotations inside the interval', pr, pb + 35, '11px ' + MONO, C.faint, 'right');
+    text(ctx, w > 500 ? 'rotations inside the interval (red guides: Fig. 2(c) example)' : 'rotations inside the interval', pr, pb + 38, '12px ' + MONO, C.faint, 'right');
     $('r-why').value = WA.logN;
   }
   function setWhyMode(m) {
     WA.mode = m;
     each($('seg-why').children, function (b) { b.setAttribute('aria-pressed', b.dataset.m === m); });
-    $('eq-why').innerHTML = m === 'box'
-      ? '|Φ| = |sin ωΔ| / ωΔ &nbsp;&nbsp; <span class="r">|∂Φ/∂μ| = |sin ωΔ| / Δ</span>'
-      : '|Φ| = e<sup>−ω²σ²/2</sup> &nbsp;&nbsp; <span class="r">|∂Φ/∂μ| = ω e<sup>−ω²σ²/2</sup></span>';
+    var lhsOut = '<span class="eq-lhs">|&Phi;|</span>';
+    var lhsGrad = '<span class="eq-lhs"><span class="mabs-tall"><span class="mfrac"><span class="mnum">&part;&Phi;</span><span class="mden">&part;<i>&mu;</i></span></span></span></span>';
+    var rhsOut = m === 'box'
+      ? '<span class="mfrac"><span class="mnum">|<span class="mop">sin</span>(<i>&omega;</i>&Delta;)|</span><span class="mden"><i>&omega;</i>&Delta;</span></span>'
+      : '<i>e</i><sup>&minus;<i>&omega;</i>&sup2;<i>&sigma;</i>&sup2;/2</sup>';
+    var rhsGrad = m === 'box'
+      ? '<span class="mfrac"><span class="mnum">|<span class="mop">sin</span>(<i>&omega;</i>&Delta;)|</span><span class="mden">&Delta;</span></span>'
+      : '<i>&omega;</i>&thinsp;<i>e</i><sup>&minus;<i>&omega;</i>&sup2;<i>&sigma;</i>&sup2;/2</sup>';
+    $('eq-why').innerHTML =
+      '<div class="eq-row"><span class="eq-tag">Output</span><span class="eq-expr">' + lhsOut + '<span class="meq">=</span><span class="eq-rhs">' + rhsOut + '</span></span></div>' +
+      '<div class="eq-row r"><span class="eq-tag">Gradient</span><span class="eq-expr">' + lhsGrad + '<span class="meq">=</span><span class="eq-rhs">' + rhsGrad + '</span></span></div>';
     if (anims.why) anims.why.dirty = true;
   }
 
