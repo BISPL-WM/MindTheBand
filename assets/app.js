@@ -120,7 +120,7 @@
       var pending = resources.filter(function (link) { return !link.href || link.soon; });
       if (pending.length) {
         $('release-links').hidden = false;
-        $('release-links').textContent = pending.map(function (link) { return link.label; }).join(' and ') + ' links forthcoming.';
+        $('release-links').textContent = pending.map(function (link) { return link.label; }).join(' and ') + ' coming soon.';
       }
       $('foot').textContent = S.footer || '';
       if (S.bibtex) {
